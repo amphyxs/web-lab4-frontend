@@ -1,0 +1,20 @@
+<div class="user-form">
+  <div class="user-form__field">
+    <label class="user-form__label" for="username">
+      Имя пользователя:
+    </label>
+    <input class="user-form__input" type="text" name="username" [(ngModel)]="username"/>
+  </div>
+  <div class="user-form__field">
+    <label class="user-form__label" for="password">
+      Пароль:
+    </label>
+    <input class="user-form__input" type="password" name="password" [(ngModel)]="password"/>
+  </div>
+  <input 
+    class="user-form__submit"
+    type="submit"
+    (click)="processAuth()"
+    [value]="sumbitText"
+  />
+</div>

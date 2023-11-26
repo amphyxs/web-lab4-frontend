@@ -1,0 +1,18 @@
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-form__field {
+  display: flex;
+}
+
+.user-form__input {
+  display: flex;
+}
+
+.user-form__label, .user-form__input {
+  flex: 1;
+}
+

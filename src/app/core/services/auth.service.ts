@@ -45,34 +45,30 @@ export class AuthService {
    * Совершить вход.
    * 
    * @param credentials данные пользователя для входа
-   * @returns успешен ли вход
+   * @throws {LoginError} если произошла ошибка при входе
    */
-  public login(credentials: UserCredentials): boolean {
+  public login(credentials: UserCredentials): void {
     // TODO: api
     const user = {
       username: credentials.username,
       points: [],
     }
     this.currentUser = user;
-
-    return true; 
   }
 
   /**
    * Зарегистрировать нового пользователя
    * 
    * @param credentials данные пользователя для регистрации
-   * @returns успешна ли регистрация
+   * @throws {RegisterError} если произошла ошибка регистрации
    */
-  public register(credentials: UserCredentials): boolean {
+  public register(credentials: UserCredentials): void {
     // TODO: api
     const user = {
       username: credentials.username,
       points: [],
     }
     this.currentUser = user;
-
-    return true;
   }
 
   /**
@@ -95,3 +91,13 @@ export class AuthService {
     localStorage.setItem(this.USER_STORAGE_KEY, userJSON);
   }
 }
+
+/**
+ * Ошибка регистрации.
+ */
+export class RegisterError extends Error { }
+
+/**
+ * Ошибка входа в аккаунт.
+ */
+export class LoginError extends Error { }
