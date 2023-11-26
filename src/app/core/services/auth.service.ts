@@ -1,0 +1,97 @@
+import { Injectable } from '@angular/core';
+import { User, UserCredentials } from '@core/models/user.model';
+
+/**
+ * Сервис для аутентификации пользователя.
+ */
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  /**
+   * Ключ в local storage для данных пользователя.
+   */
+  private readonly USER_STORAGE_KEY = 'user';
+
+  private _currentUser: User | null = null;
+  
+  /**
+   * Текущий залогиненный пользователь.
+   */
+  public get currentUser(): User | null {
+    if (this._currentUser != undefined) {
+      return this._currentUser;
+    }
+
+    const storedUserCredentials = this._restoreUserCredentials();
+    if (storedUserCredentials == undefined) {
+      return null;
+    }
+
+    this.login(storedUserCredentials);
+    
+    return this._currentUser;
+  }
+
+  private set currentUser(value: User) {
+    this._currentUser = value;
+    this._storeUserCredentials();
+  }
+
+  constructor() { }
+
+  /**
+   * Совершить вход.
+   * 
+   * @param credentials данные пользователя для входа
+   * @returns успешен ли вход
+   */
+  public login(credentials: UserCredentials): boolean {
+    // TODO: api
+    const user = {
+      username: credentials.username,
+      points: [],
+    }
+    this.currentUser = user;
+
+    return true; 
+  }
+
+  /**
+   * Зарегистрировать нового пользователя
+   * 
+   * @param credentials данные пользователя для регистрации
+   * @returns успешна ли регистрация
+   */
+  public register(credentials: UserCredentials): boolean {
+    // TODO: api
+    const user = {
+      username: credentials.username,
+      points: [],
+    }
+    this.currentUser = user;
+
+    return true;
+  }
+
+  /**
+   * Восстановить сохранённые данные пользователя.
+   * 
+   * @returns данные пользователя или `null`, если они не были сохранены
+   */
+  private _restoreUserCredentials(): UserCredentials | null {
+    const storedUserCredentials = localStorage.getItem(this.USER_STORAGE_KEY);
+
+    return storedUserCredentials ? JSON.parse(storedUserCredentials) : null;
+  }
+
+  /**
+   * Сохранить данные пользователя.
+   */
+  private _storeUserCredentials(): void {
+    const userJSON = JSON.stringify(this._currentUser);
+    
+    localStorage.setItem(this.USER_STORAGE_KEY, userJSON);
+  }
+}
