@@ -51,3 +51,11 @@ export class Point {
     ];
   }
 }
+
+/**
+ * Простые 2D координаты.
+ */
+export interface Coordinates {
+  x: number;
+  y: number;
+}
