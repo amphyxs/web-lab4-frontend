@@ -1,1 +1,28 @@
-<p>home works!</p>
+<div class="point-panel">
+  <div class="point-panel__plot" id="plot-element"></div>
+  <form class="point-panel__point-form">
+    <div class="point-form__field">
+      <label class="field__label">X:</label>
+      <div class="field__checkboxes">
+        <label class="checkboxes__label" *ngFor="let x of X_VALUES">
+          {{ x }}
+          <input class="checkboxes__checkbox" type="checkbox" [value]="x"/>
+        </label>
+      </div>
+    </div>
+    <div class="point-form__field">
+      <label class="field__label">Y:</label>
+      <input class="field__input" type="text">
+    </div>
+    <div class="point-form__field">
+      <label class="field__label">R:</label>
+      <div class="field__checkboxes">
+        <label class="checkboxes__label" *ngFor="let r of R_VALUES">
+          {{ r }}
+          <input class="checkboxes__checkbox" type="checkbox" [value]="r"/>
+        </label>
+      </div>
+    </div>
+    <input class="point-form__submit" type="submit" value="Отправить"/>
+  </form>
+</div>
