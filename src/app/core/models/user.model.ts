@@ -1,11 +1,11 @@
-import { Point } from "./point.model";
+import { PointData } from "./point.model";
 
 /**
  * Пользователь.
  */
 export interface User {
   username: string;
-  points: Point[];
+  points: PointData[];
 }
 
 /**
