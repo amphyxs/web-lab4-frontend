@@ -1,2 +1,22 @@
 @import "/src/app/shared/styles/forms.scss";
 
+
+@media (max-width: 684px) {
+  .form {
+    @apply p-4;
+  }
+
+  .form__field {
+    grid-template-columns: 100px 1fr;
+  }
+
+  .field {
+    &__label {
+      @apply text-sm;
+    }
+
+    &__input {
+      width: clamp(20px, 90%, 200px);
+    }
+  }
+}

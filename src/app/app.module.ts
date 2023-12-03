@@ -9,6 +9,7 @@ import { UserFormComponent } from './shared/components/user-form/user-form.compo
 import { RegisterComponent } from './pages/register/register.component';
 import { PointsPlotComponent } from './shared/components/points-plot/points-plot.component';
 import { PointsTableComponent } from './shared/components/points-table/points-table.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PointsTableComponent } from './shared/components/points-table/points-ta
     RegisterComponent,
     PointsPlotComponent,
     PointsTableComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
