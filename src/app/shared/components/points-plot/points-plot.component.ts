@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Coordinates, Point } from '@core/models/point.model';
 import { xAxis, makeValueDiscrete, yAxis, isDiscreteValues } from '@shared/lib/coords-info';
 import functionPlot from 'function-plot';
@@ -12,7 +12,7 @@ import { FunctionPlotOptions, FunctionPlotDatum } from 'function-plot/dist';
 @Component({
   selector: 'app-points-plot',
   templateUrl: './points-plot.component.html',
-  styleUrls: ['./points-plot.component.scss']
+  styleUrls: ['./points-plot.component.scss'],
 })
 export class PointsPlotComponent implements AfterViewInit {
   
@@ -42,12 +42,12 @@ export class PointsPlotComponent implements AfterViewInit {
   /**
    * Ширина графика.
    */
-  private readonly _WIDTH = 400;
+  private _width = 400;
 
   /**
    * Высота графика.
    */
-  private readonly _HEIGHT = 400;
+  private _height = 400;
 
   /**
    * Цвета элементов графика.
@@ -76,8 +76,8 @@ export class PointsPlotComponent implements AfterViewInit {
 
     return {
       target: `#${this.plotElement?.nativeElement.id}`,
-      width: this._WIDTH,
-      height: this._HEIGHT,
+      width: this._width,
+      height: this._height,
       xAxis: { domain: [-3, 3] },
       yAxis: { domain: [-3, 3] },
       grid: true,
@@ -127,6 +127,10 @@ export class PointsPlotComponent implements AfterViewInit {
     this._cursorPosition = { x, y };
   }
 
+  constructor(
+    private _cdr: ChangeDetectorRef,
+  ) { }
+
   /**
    * Получить объект для `function-plot` для нужного вида точки.
    * 
@@ -159,7 +163,7 @@ export class PointsPlotComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    functionPlot(this._options);
+    this._drawPlot();
   }
 
   /**
@@ -176,5 +180,23 @@ export class PointsPlotComponent implements AfterViewInit {
    */
   public onClick(): void {
     this.updateCoords.emit(this._cursorPosition);
+  }
+
+  @HostListener('window:resize')
+  private _drawPlot() {
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth <= 684) {
+      this._width = 400;
+      this._height = 400;
+    } else if (windowWidth <= 1264) {
+      this._width = 300;
+      this._height = 300;
+    } else {
+      this._width = 500;
+      this._height = 500;
+    }
+
+    functionPlot(this._options);
   }
 }
