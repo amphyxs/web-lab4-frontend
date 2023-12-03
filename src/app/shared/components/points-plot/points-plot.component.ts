@@ -94,14 +94,7 @@ export class PointsPlotComponent implements AfterViewInit, OnChanges {
       grid: true,
       data: [
         {
-          fn: `-x + ${r}/2`,
-          closed: true,
-          skipTip: true,
-          range: [0, r/2],
-          color: this._COLORS.area,
-        },
-        {
-          fn: `${r}`,
+          fn: `x + ${r}`,
           closed: true,
           skipTip: true,
           range: [-r, 0],
@@ -109,6 +102,13 @@ export class PointsPlotComponent implements AfterViewInit, OnChanges {
         },
         {
           fn: `-sqrt(${r}^2 - x^2)`,
+          closed: true,
+          skipTip: true,
+          range: [-r, 0],
+          color: this._COLORS.area,
+        },
+        {
+          fn: `-${r}`,
           closed: true,
           skipTip: true,
           range: [0, r],
@@ -195,6 +195,12 @@ export class PointsPlotComponent implements AfterViewInit, OnChanges {
     this.updateCoords.emit(this._cursorPosition);
   }
 
+  /**
+   * Отобразить график, взяв элемент из библиотеки `function-plot`.
+   * 
+   * Отрисовывает график заново при изменении размеров экрана, 
+   * так как это нужно для адаптивности.
+   */
   @HostListener('window:resize')
   private _drawPlot() {
     const windowWidth = window.innerWidth;
