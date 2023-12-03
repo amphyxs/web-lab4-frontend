@@ -39,7 +39,7 @@ export const xAxis: DiscreteValues = {
  * Значения по оси Y.
  */
 export const yAxis: RangeValues = {
-  start: -3 + Number.EPSILON,
+  start: -3 + Number.EPSILON,  // Добавляем очень малую величину, чтобы сделать границу выколотой
   end: 5 - Number.EPSILON,
 };
 
@@ -77,10 +77,23 @@ export function makeValueDiscrete(value: number, valuesSet: any): number {
   return result;
 }
 
+/**
+ * Узнать, диксретный ли тип значений у величины.
+ *
+ * @param values объект значений
+ * @returns дискретные ли значения у объекта
+ */
 export function isDiscreteValues(values: Values): boolean {
   return 'isDiscrete' in values;
 }
 
+/**
+ * Провести валидация значения в зависимости от типа допустимых значений.
+ *
+ * @param valuesInfo допустимые значения (например, объект `DiscreteValues` или `RangeValues`)
+ * @param value значение для валидации
+ * @returns прошло ли значение валидацию
+ */
 export function validateValue(valuesInfo: Values, value?: number): boolean {
   if (value == undefined)
     return false;
