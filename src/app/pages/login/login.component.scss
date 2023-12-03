@@ -1,0 +1,6 @@
+@import "/src/app/shared/styles/mixins.scss";
+
+:host {
+  @apply w-full flex p-5 flex-col;
+  @include card;
+}

@@ -7,10 +7,10 @@
   >
   </app-points-plot>
   <form
-    class="flex flex-col content-center justify-center flex-1 p-10 point-panel__point-form"
+    class="form"
     (submit)="onPointFormSubmit($event)"
   >
-    <div class="point-form__field">
+    <div class="form__field">
       <label class="field__label">X:</label>
       <div class="field__checkboxes">
         <label class="checkboxes__label" *ngFor="let x of xValues">
@@ -25,11 +25,11 @@
         </label>
       </div>
     </div>
-    <div class="point-form__field">
+    <div class="form__field">
       <label class="field__label">Y:</label>
       <input class="field__input" type="text" [value]="(currentPoint.y | number: '0.0-3') ?? ''"/>
     </div>
-    <div class="point-form__field">
+    <div class="form__field">
       <label class="field__label">R:</label>
       <div class="field__checkboxes">
         <label class="checkboxes__label" *ngFor="let r of rValues">
@@ -45,7 +45,7 @@
       </div>
     </div>
     <input
-      class="point-form__submit"
+      class="form__submit"
       type="submit"
       value="Отправить"
       [disabled]="!isFormValid"

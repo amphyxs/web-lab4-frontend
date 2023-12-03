@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserCredentials } from '@core/models/user.model';
-import { AuthService, RegisterError } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   standalone: true,
