@@ -1,4 +1,13 @@
 /**
+ * Данные о точке при редактировании в форме.
+ */
+export interface PointEdit {
+  x?: number;
+  y?: number;
+  r?: number;
+}
+
+/**
  * Данные о точке.
  */
 export interface PointData {

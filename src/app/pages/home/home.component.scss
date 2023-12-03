@@ -13,7 +13,7 @@
 .point-form {
 
   &__submit {
-    @apply text-slate-400 bg-slate-800 w-64 h-16 self-center mt-5 border-2 border-cyan-800 text-xl md:text-2xl rounded-xl;
+    @apply text-slate-400 bg-slate-800 w-64 h-16 self-center mt-5 border-2 border-cyan-800 text-xl md:text-2xl rounded-xl hover:cursor-pointer disabled:brightness-75 disabled:cursor-default hover:opacity-80 hover:border-cyan-500 disabled:hover:border-inherit disabled:hover:opacity-100;
   }
 
   &__field {

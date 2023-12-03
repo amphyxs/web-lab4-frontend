@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Coordinates, Point } from '@core/models/point.model';
-import { xAxis, makeValueDiscrete, yAxis, isDiscreteValues } from '@shared/lib/coords-info';
+import { xAxis, makeValueDiscrete, yAxis, isDiscreteValues, rAxis } from '@shared/lib/coords-info';
 import functionPlot from 'function-plot';
 import { FunctionPlotOptions, FunctionPlotDatum } from 'function-plot/dist';
 
@@ -14,7 +14,7 @@ import { FunctionPlotOptions, FunctionPlotDatum } from 'function-plot/dist';
   templateUrl: './points-plot.component.html',
   styleUrls: ['./points-plot.component.scss'],
 })
-export class PointsPlotComponent implements AfterViewInit {
+export class PointsPlotComponent implements AfterViewInit, OnChanges {
   
   /**
    * Точки для отображения.
@@ -24,7 +24,7 @@ export class PointsPlotComponent implements AfterViewInit {
   /**
    * Текущее значение R.
    */
-  @Input() rValue: number = 1;
+  @Input('rValue') rValueFromForm?: number;
 
   /**
    * Событие, когда мы хотим обновить координаты точки.
@@ -69,10 +69,21 @@ export class PointsPlotComponent implements AfterViewInit {
   private _cursorPosition?: Coordinates;
 
   /**
+   * Получить значение R с учётом, чтобы оно не было `undefined` и отрицательным.
+   */
+  private get _rValue(): number {
+    if (this.rValueFromForm == undefined || this.rValueFromForm <= 0) {
+      return rAxis.default ?? 1;
+    }
+
+    return this.rValueFromForm;
+  }
+
+  /**
    * Получить объект параметров для компонента графика `function-plot`.
    */
   private get _options(): FunctionPlotOptions {
-    const r = this.rValue;
+    const r = this._rValue;
 
     return {
       target: `#${this.plotElement?.nativeElement.id}`,
@@ -109,6 +120,8 @@ export class PointsPlotComponent implements AfterViewInit {
     };
   }
 
+  constructor() { }
+
   /**
    * Обновить значение координат курсора.
    * 
@@ -126,10 +139,6 @@ export class PointsPlotComponent implements AfterViewInit {
 
     this._cursorPosition = { x, y };
   }
-
-  constructor(
-    private _cdr: ChangeDetectorRef,
-  ) { }
 
   /**
    * Получить объект для `function-plot` для нужного вида точки.
@@ -152,7 +161,7 @@ export class PointsPlotComponent implements AfterViewInit {
     }
 
     return {
-      points: points.map(point => point.getCoordsOnPlot(this.rValue)),
+      points: points.map(point => point.getCoordsOnPlot(this._rValue)),
       fnType: "points",
       graphType: "scatter",
       color: color,
@@ -166,13 +175,17 @@ export class PointsPlotComponent implements AfterViewInit {
     this._drawPlot();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this._drawPlot();
+  }
+
   /**
    * Обработать перемещение курсора пользователя по графику.
    * 
-   * @param event событие перемещения курсора
+   * @param cursorCoords позиция курсора в системе координат
    */
-  public onMouseMove(event: MouseEvent): void {
-    this._setCursorPosition({ x: event.x, y: event.y });
+  public onMouseMove(cursorCoords: Coordinates): void {
+    this._setCursorPosition(cursorCoords);
   }
 
   /**
@@ -197,6 +210,9 @@ export class PointsPlotComponent implements AfterViewInit {
       this._height = 500;
     }
 
-    functionPlot(this._options);
+    const chart = functionPlot(this._options);
+    chart.on('mousemove', (coords: Coordinates) => {
+      this.onMouseMove(coords);
+    });
   }
 }

@@ -2,6 +2,8 @@
   <app-points-plot
     class="text-slate-400"
     [points]="points"
+    [rValue]="currentPoint.r"
+    (updateCoords)="setCoordsFromPlot($event)"
   >
   </app-points-plot>
   <form class="flex flex-col content-center justify-center flex-1 p-10 point-panel__point-form">
@@ -10,24 +12,41 @@
       <div class="field__checkboxes">
         <label class="checkboxes__label" *ngFor="let x of xValues">
           {{ x }}
-          <input class="checkboxes__checkbox" type="checkbox" [value]="x" />
+          <input
+            class="checkboxes__checkbox"
+            type="checkbox"
+            [value]="x"
+            [checked]="currentPoint.x == x"
+            (click)="onCheckboxSelected($event, 'x')"
+          />
         </label>
       </div>
     </div>
     <div class="point-form__field">
       <label class="field__label">Y:</label>
-      <input class="field__input" type="text">
+      <input class="field__input" type="text" [value]="(currentPoint.y | number: '0.0-3') ?? ''"/>
     </div>
     <div class="point-form__field">
       <label class="field__label">R:</label>
       <div class="field__checkboxes">
         <label class="checkboxes__label" *ngFor="let r of rValues">
           {{ r }}
-          <input class="checkboxes__checkbox" type="checkbox" [value]="r" />
+          <input
+            class="checkboxes__checkbox"
+            type="checkbox"
+            [value]="r"
+            [checked]="currentPoint.r == r"
+            (click)="onCheckboxSelected($event, 'r')"
+          />
         </label>
       </div>
     </div>
-    <input class="point-form__submit" type="submit" value="Отправить" />
+    <input
+      class="point-form__submit"
+      type="submit"
+      value="Отправить"
+      [disabled]="!isFormValid"
+    />
   </form>
 </div>
 <div class="results">

@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Point } from '@core/models/point.model';
+import { Coordinates, Point, PointEdit } from '@core/models/point.model';
 import { PointsService } from '@core/services/points.service';
-import { rAxis, xAxis } from '@shared/lib/coords-info';
+import { rAxis, validateValue, xAxis, yAxis } from '@shared/lib/coords-info';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
@@ -15,6 +15,11 @@ export class HomeComponent implements OnInit, OnDestroy {
    * Точки.
    */
   public points: Point[] = [];
+
+  /**
+   * Текущая редактируемая точка.
+   */
+  public currentPoint: PointEdit = {};
 
   /**
    * Объект подписки на `Observable` списка точек.
@@ -35,6 +40,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     return rAxis.availableValues;
   }
 
+  /**
+   * Валидные ли данные в форме.
+   */
+  public get isFormValid(): boolean {
+    const { x, y, r } = this.currentPoint;
+
+    return (
+      validateValue(xAxis, x) &&
+      validateValue(yAxis, y) &&
+      validateValue(rAxis, r) &&
+      (r != undefined && r > 0)
+    );
+  }
+
   constructor(
     private _pointsService: PointsService,
   ) { }
@@ -49,6 +68,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Обработать выбор чекбокса.
+   *
+   * В этой лабе, к сожалению, чекбоксы - это радиокнопки.
+   *
+   * @param event событие клика по чекбоксу
+   */
+  public onCheckboxSelected(event: Event, checkboxType: 'x' | 'r') {
+    const checkboxSelected = event.target as HTMLElement;
+
+    const value = Number(checkboxSelected.getAttribute('value'));
+    const wasChecked = this.currentPoint[checkboxType] == value;
+
+    if (wasChecked) {
+      this.currentPoint[checkboxType] = undefined;
+    } else {
+      this.currentPoint[checkboxType] = value;
+    }
+  }
+
+  /**
    * Получить точки.
    */
   private _getPoints(): void {
@@ -58,6 +97,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.points = points;
         })
     );
+  }
+
+  public setCoordsFromPlot(coords: Coordinates) {
+    this.currentPoint.x = coords.x;
+    this.currentPoint.y = coords.y;
   }
 
 }
