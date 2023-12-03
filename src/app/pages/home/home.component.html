@@ -6,7 +6,10 @@
     (updateCoords)="setCoordsFromPlot($event)"
   >
   </app-points-plot>
-  <form class="flex flex-col content-center justify-center flex-1 p-10 point-panel__point-form">
+  <form
+    class="flex flex-col content-center justify-center flex-1 p-10 point-panel__point-form"
+    (submit)="onPointFormSubmit($event)"
+  >
     <div class="point-form__field">
       <label class="field__label">X:</label>
       <div class="field__checkboxes">

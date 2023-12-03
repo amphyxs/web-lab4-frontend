@@ -99,9 +99,24 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
-  public setCoordsFromPlot(coords: Coordinates) {
+  /**
+   * Установить текущие координаты точки с тех, что пришли в событии от графика.
+   *
+   * @param coords координаты с графика (например, при клике)
+   */
+  public setCoordsFromPlot(coords: Coordinates): void {
     this.currentPoint.x = coords.x;
     this.currentPoint.y = coords.y;
+  }
+
+  /**
+   * Сохранить текущую точку.
+   */
+  public onPointFormSubmit(event: Event): void {
+    event.preventDefault();
+    this._pointsService.savePoint(this.currentPoint);
+    // Заново получаем точки
+    this._getPoints();
   }
 
 }

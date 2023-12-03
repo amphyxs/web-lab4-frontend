@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Point, PointData } from '@core/models/point.model';
+import { Point, PointData, PointEdit } from '@core/models/point.model';
 import { Observable, map, of } from 'rxjs';
 
 /**
@@ -50,5 +50,16 @@ export class PointsService {
         map(pointsData => pointsData.map(data => new Point(data))),
       )
     );
+  }
+
+  /**
+   * Сохранить пользовательскую точку.
+   *
+   * @param pointData объект из формы точки.
+   */
+  public savePoint(pointData: PointEdit): void {
+    // TODO: api
+
+    console.log(pointData);
   }
 }
