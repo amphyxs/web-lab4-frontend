@@ -1,0 +1,11 @@
+.points-table {
+  border-spacing: 10px;
+  border-collapse: separate;
+  @apply w-full text-xl md:text-3xl text-slate-400 text-center;
+}
+
+.table-header {
+  &__cell {
+    @apply h-14 md:h-20 bg-slate-800 w-10 rounded-xl border-2 border-cyan-700;
+  }
+}

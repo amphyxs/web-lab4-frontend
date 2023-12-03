@@ -1,6 +1,8 @@
+@import "/src/app/shared/styles/mixins.scss";
+
 .point-panel {
   > * {
-    @apply rounded-xl border-2 border-cyan-800;
+    @include card;
   }
 
   &__point-form {
@@ -45,4 +47,9 @@
   &__checkbox {
     @apply w-5 h-5;
   }
+}
+
+.results {
+  @include card;
+  @apply mt-2 md:mt-10 w-full;
 }
