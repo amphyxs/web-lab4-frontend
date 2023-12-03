@@ -7,26 +7,12 @@
         <th class="table-header__cell">Дата</th>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>5</td>
-            <td>Да</td>
-            <td>01.02.23 11:41:23</td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>5</td>
-            <td>Да</td>
-            <td>01.02.23 11:41:23</td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>5</td>
-            <td>Да</td>
-            <td>01.02.23 11:41:23</td>
+        <tr *ngFor="let point of points">
+            <td>{{ point.x }}</td>
+            <td>{{ point.y }}</td>
+            <td>{{ point.r }}</td>
+            <td>{{ point.hit ? 'Да' : 'Нет' }}</td>
+            <td>{{ point.created | date }}</td>
         </tr>
     </tbody>
 </table>

@@ -6,6 +6,7 @@ export interface PointData {
   y: number;
   r: number;
   hit: boolean;
+  createdTimestamp: number;
 }
 
 /**
@@ -20,11 +21,14 @@ export class Point {
 
   public hit: boolean;
 
+  public created: Date;
+
   constructor(data: PointData) {
     this.x = data.x;
     this.y = data.y;
     this.r = data.r;
     this.hit = data.hit;
+    this.created = new Date(data.createdTimestamp);
   }
 
   /**

@@ -1,10 +1,14 @@
 <div class="flex flex-col gap-2 point-panel md:gap-10 sm:flex-row">
-  <app-points-plot class="text-slate-400"></app-points-plot>
+  <app-points-plot
+    class="text-slate-400"
+    [points]="points"
+  >
+  </app-points-plot>
   <form class="flex flex-col content-center justify-center flex-1 p-10 point-panel__point-form">
     <div class="point-form__field">
       <label class="field__label">X:</label>
       <div class="field__checkboxes">
-        <label class="checkboxes__label" *ngFor="let x of X_VALUES">
+        <label class="checkboxes__label" *ngFor="let x of xValues">
           {{ x }}
           <input class="checkboxes__checkbox" type="checkbox" [value]="x" />
         </label>
@@ -17,7 +21,7 @@
     <div class="point-form__field">
       <label class="field__label">R:</label>
       <div class="field__checkboxes">
-        <label class="checkboxes__label" *ngFor="let r of R_VALUES">
+        <label class="checkboxes__label" *ngFor="let r of rValues">
           {{ r }}
           <input class="checkboxes__checkbox" type="checkbox" [value]="r" />
         </label>
@@ -27,5 +31,9 @@
   </form>
 </div>
 <div class="results">
-  <app-points-table class="points-table"></app-points-table>
+  <app-points-table
+    class="points-table"
+    [points]="points"
+  >
+  </app-points-table>
 </div>
