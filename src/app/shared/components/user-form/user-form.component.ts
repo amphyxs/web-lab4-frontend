@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -33,17 +34,18 @@ export class UserFormComponent {
         password: this.password
     };
     
-    try {
-      if (this.isRegistering) {
-        this._authService.register(credentials);
-      } else {
-        this._authService.login(credentials);
-      }
-      
-      this._router.navigate(['/']);
-    } catch (err) {
-      alert(err);
-    } 
+    let authObservable: Observable<Object>;
+
+    if (this.isRegistering) {
+      authObservable = this._authService.register(credentials);
+    } else {
+      authObservable = this._authService.login(credentials);
+    }
+
+    authObservable.subscribe({
+      complete: () => this._router.navigate(['/']),
+      error: (err) => alert(err.message),
+    })
   }
   
 }

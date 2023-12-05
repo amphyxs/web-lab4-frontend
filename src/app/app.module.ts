@@ -10,6 +10,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { PointsPlotComponent } from './shared/components/points-plot/points-plot.component';
 import { PointsTableComponent } from './shared/components/points-table/points-table.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    UserFormComponent
+    UserFormComponent,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

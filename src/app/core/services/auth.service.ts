@@ -1,5 +1,12 @@
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, UserCredentials } from '@core/models/user.model';
+import { environment } from 'environments/environment';
+import { Observable, map, tap, throwError } from 'rxjs';
+
+interface LoginOrRegisterResponse {
+  token: string;
+};
 
 /**
  * Сервис для аутентификации пользователя.
@@ -15,60 +22,98 @@ export class AuthService {
   private readonly USER_STORAGE_KEY = 'user';
 
   private _currentUser: User | null = null;
-  
-  /**
-   * Текущий залогиненный пользователь.
-   */
+
   public get currentUser(): User | null {
-    if (this._currentUser != undefined) {
-      return this._currentUser;
-    }
-
-    const storedUserCredentials = this._restoreUserCredentials();
-    if (storedUserCredentials == undefined) {
-      return null;
-    }
-
-    this.login(storedUserCredentials);
-    
     return this._currentUser;
   }
 
   private set currentUser(value: User) {
     this._currentUser = value;
-    this._storeUserCredentials();
+    this._storeUser();
   }
 
-  constructor() { }
+  private get _authHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    if (this.currentUser?.token != undefined)
+      headers = headers.set('Authorization', `JWT ${this.currentUser?.token}`);
+
+    return headers;
+  }
+
+  constructor(
+    private _http: HttpClient,
+  ) { }
 
   /**
    * Совершить вход.
    * 
    * @param credentials данные пользователя для входа
-   * @throws {LoginError} если произошла ошибка при входе
+   * @returns `Observable` с объектов ответа
    */
-  public login(credentials: UserCredentials): void {
-    // TODO: api
-    const user = {
-      username: credentials.username,
-      points: [],
-    }
-    this.currentUser = user;
+  public login(credentials: UserCredentials): Observable<Object> {
+    const url = `${environment.apiUrl}/auth/login`;
+
+    const loginObservable = this._http.post<LoginOrRegisterResponse>(url, credentials);
+
+    return loginObservable.pipe(
+      tap(res => {
+        this.currentUser = {
+          username: credentials.username,
+          points: [],
+          token: res.token,
+        };
+      }),
+    );
   }
 
   /**
    * Зарегистрировать нового пользователя
    * 
    * @param credentials данные пользователя для регистрации
-   * @throws {RegisterError} если произошла ошибка регистрации
+   * @returns `Observable` с объектов ответа
    */
-  public register(credentials: UserCredentials): void {
-    // TODO: api
-    const user = {
-      username: credentials.username,
-      points: [],
+  public register(credentials: UserCredentials): Observable<Object> {
+    const url = `${environment.apiUrl}/auth/register`;
+
+    const registerObservable = this._http.post<LoginOrRegisterResponse>(url, credentials);
+
+    return registerObservable.pipe(
+      tap(res => {
+        this.currentUser = {
+          username: credentials.username,
+          points: [],
+          token: res.token,
+        };
+      }),
+    );
+  }
+
+  /**
+   * Выйти из аккаунта.
+   *
+   * @returns `Observable` с объектов ответа
+   */
+  public logout(): Observable<Object> {
+    const url = `${environment.apiUrl}/auth/logout`;
+
+    return this._http.post(
+      url,
+      null,
+      {
+        headers: this._authHeaders
+      },
+    );
+  }
+
+  public authViaToken(): boolean {
+    const user = this._restoreUser();
+
+    if (user == undefined || user.token == undefined) {
+      return false;
     }
+
     this.currentUser = user;
+    return true;
   }
 
   /**
@@ -76,7 +121,7 @@ export class AuthService {
    * 
    * @returns данные пользователя или `null`, если они не были сохранены
    */
-  private _restoreUserCredentials(): UserCredentials | null {
+  private _restoreUser(): User | null {
     const storedUserCredentials = localStorage.getItem(this.USER_STORAGE_KEY);
 
     return storedUserCredentials ? JSON.parse(storedUserCredentials) : null;
@@ -85,19 +130,9 @@ export class AuthService {
   /**
    * Сохранить данные пользователя.
    */
-  private _storeUserCredentials(): void {
+  private _storeUser(): void {
     const userJSON = JSON.stringify(this._currentUser);
     
     localStorage.setItem(this.USER_STORAGE_KEY, userJSON);
   }
 }
-
-/**
- * Ошибка регистрации.
- */
-export class RegisterError extends Error { }
-
-/**
- * Ошибка входа в аккаунт.
- */
-export class LoginError extends Error { }
