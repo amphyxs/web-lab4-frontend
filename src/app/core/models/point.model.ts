@@ -14,8 +14,8 @@ export interface PointData {
   x: number;
   y: number;
   r: number;
-  hit: boolean;
-  createdTimestamp: number;
+  isHit: boolean;
+  createdAt: number;
 }
 
 /**
@@ -36,8 +36,8 @@ export class Point {
     this.x = data.x;
     this.y = data.y;
     this.r = data.r;
-    this.hit = data.hit;
-    this.created = new Date(data.createdTimestamp);
+    this.hit = data.isHit;
+    this.created = new Date(data.createdAt);
   }
 
   /**

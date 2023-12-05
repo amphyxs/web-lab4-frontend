@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Point, PointData, PointEdit } from '@core/models/point.model';
+import { environment } from 'environments/environment';
 import { Observable, map, of } from 'rxjs';
+import { AuthService } from './auth.service';
 
 /**
  * Сервис получения точек.
@@ -10,7 +13,10 @@ import { Observable, map, of } from 'rxjs';
 })
 export class PointsService {
 
-  constructor() { }
+  constructor(
+    private _http: HttpClient,
+    private _authService: AuthService,
+  ) { }
 
   /**
    * Получить список точек с бэкенда.
@@ -18,24 +24,14 @@ export class PointsService {
    * @returns `Observable` с объектом данных о точке.
    */
   private _getPointsData(): Observable<PointData[]> {
-    // TODO: API
+    const url = `lab4/api/checks/previousChecks`;
     
-    return of([
+    return this._http.get<PointData[]>(
+      url,
       {
-        x: 1,
-        y: 1,
-        r: 1,
-        hit: false,
-        createdTimestamp: 31311331,
+        headers: this._authService.authHeaders,
       },
-      {
-        x: -1,
-        y: 0.5,
-        r: 1,
-        hit: true,
-        createdTimestamp: 313120331,
-      },
-    ]);
+    );
   }
 
   /**
@@ -57,9 +53,19 @@ export class PointsService {
    *
    * @param pointData объект из формы точки.
    */
-  public savePoint(pointData: PointEdit): void {
-    // TODO: api
+  public savePoint(pointData: PointEdit): Observable<Object> {
+    const url = 'lab4/api/checks/check';
 
-    console.log(pointData);
+    return this._http.post(
+      url,
+      {
+        x: pointData.x,
+        y: pointData.y,
+        r: pointData.r,
+      },
+      {
+        headers: this._authService.authHeaders,
+      },
+    );
   }
 }

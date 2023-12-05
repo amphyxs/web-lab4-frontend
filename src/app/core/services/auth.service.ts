@@ -32,10 +32,10 @@ export class AuthService {
     this._storeUser();
   }
 
-  private get _authHeaders(): HttpHeaders {
+  public get authHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     if (this.currentUser?.token != undefined)
-      headers = headers.set('Authorization', `JWT ${this.currentUser?.token}`);
+      headers = headers.set('Authorization', this.currentUser?.token);
 
     return headers;
   }
@@ -100,7 +100,7 @@ export class AuthService {
       url,
       null,
       {
-        headers: this._authHeaders
+        headers: this.authHeaders
       },
     );
   }

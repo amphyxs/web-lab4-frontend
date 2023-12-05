@@ -114,9 +114,12 @@ export class HomeComponent implements OnInit, OnDestroy {
    */
   public onPointFormSubmit(event: Event): void {
     event.preventDefault();
-    this._pointsService.savePoint(this.currentPoint);
-    // Заново получаем точки
-    this._getPoints();
+    this._pointsService.savePoint(this.currentPoint).subscribe({
+      complete: () => {
+        // Заново получаем точки
+        this._getPoints();
+      }
+    });
   }
 
 }
