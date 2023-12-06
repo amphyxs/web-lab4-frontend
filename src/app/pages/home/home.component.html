@@ -27,7 +27,7 @@
     </div>
     <div class="form__field">
       <label class="field__label">Y:</label>
-      <input class="field__input" type="text" [value]="(currentPoint.y | number: '0.0-3') ?? ''"/>
+      <input class="field__input" type="text" [(ngModel)]="currentPoint.y" [ngModelOptions]="{standalone: true}"/>
     </div>
     <div class="form__field">
       <label class="field__label">R:</label>

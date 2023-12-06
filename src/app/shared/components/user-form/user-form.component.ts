@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,11 +11,16 @@ import { Observable } from 'rxjs';
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+  ],
 })
 export class UserFormComponent {
   
   @Input() isRegistering: boolean = false;
+
+  public validationError?: string;
   
   public username: string = '';
 
@@ -44,7 +51,12 @@ export class UserFormComponent {
 
     authObservable.subscribe({
       complete: () => this._router.navigate(['/']),
-      error: (err) => alert(err.message),
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 401)
+          this.validationError = 'Неверный логин или пароль';
+        else if (err.status === 500)
+          this.validationError = 'Длина не менее 3-х символов';
+      },
     })
   }
   

@@ -9,7 +9,12 @@
     <label class="field__label" >
       Пароль:
     </label>
-    <input class="field__input" type="password" name="password" [(ngModel)]="password"/>
+    <div>
+      <input class="field__input" type="password" name="password" [(ngModel)]="password"/>
+      <p *ngIf="validationError != undefined" class="text-red-700 break-words whitespace-break-spaces">
+        {{ validationError }}
+      </p>
+    </div>
   </div>
   <input 
     class="form__submit"

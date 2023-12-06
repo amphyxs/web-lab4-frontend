@@ -104,10 +104,10 @@ export function validateValue(valuesInfo: Values, value?: number): boolean {
   } else {
     const rangeValuesInfo = valuesInfo as RangeValues;
     let isInsideRange = true;
-    if (rangeValuesInfo.start)
-      isInsideRange = rangeValuesInfo.start <= value;
-    if (rangeValuesInfo.end)
-      isInsideRange = rangeValuesInfo.end >= value;
+    if (rangeValuesInfo.start != undefined)
+      isInsideRange = isInsideRange && rangeValuesInfo.start <= value;
+    if (rangeValuesInfo.end != undefined)
+      isInsideRange = isInsideRange && rangeValuesInfo.end >= value;
 
     return isInsideRange;
   }

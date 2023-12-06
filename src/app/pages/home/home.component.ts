@@ -48,9 +48,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public get isFormValid(): boolean {
     const { x, y, r } = this.currentPoint;
 
+    let numY: number | undefined = Number(y);
+    if (isNaN(numY))
+      numY = undefined;
+
     return (
       validateValue(xAxis, x) &&
-      validateValue(yAxis, y) &&
+      validateValue(yAxis, numY) &&
       validateValue(rAxis, r) &&
       (r != undefined && r > 0)
     );

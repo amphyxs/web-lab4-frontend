@@ -11,6 +11,8 @@ import { PointsPlotComponent } from './shared/components/points-plot/points-plot
 import { PointsTableComponent } from './shared/components/points-table/points-table.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { HttpClientModule } from "@angular/common/http";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { HttpClientModule } from "@angular/common/http";
     AppRoutingModule,
     UserFormComponent,
     HttpClientModule,
+    CommonModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
