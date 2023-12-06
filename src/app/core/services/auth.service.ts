@@ -117,7 +117,7 @@ export class AuthService {
       return of(false);
     }
 
-    const url = 'lab4/api/auth/check-token';
+    const url = `${environment.apiUrl}/auth/checkToken`;
     const checkTokenObservable = this._http.post(
       url,
       null,
