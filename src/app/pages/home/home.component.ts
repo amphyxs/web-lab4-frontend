@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Coordinates, Point, PointEdit } from '@core/models/point.model';
+import { AuthService } from '@core/services/auth.service';
 import { PointsService } from '@core/services/points.service';
 import { rAxis, validateValue, xAxis, yAxis } from '@shared/lib/coords-info';
 import { Subscription } from 'rxjs';
@@ -56,6 +58,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _pointsService: PointsService,
+    private _authService: AuthService,
+    private _router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -120,6 +124,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this._getPoints();
       }
     });
+  }
+
+  public onLogout() {
+    this._authService.logout();
+    this._router.navigate(['/login']);
   }
 
 }

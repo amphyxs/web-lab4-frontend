@@ -94,6 +94,8 @@ export class AuthService {
    * @returns `Observable` с объектов ответа
    */
   public logout(): Observable<Object> {
+    localStorage.removeItem(this.USER_STORAGE_KEY);
+
     const url = `${environment.apiUrl}/auth/logout`;
 
     return this._http.post(
