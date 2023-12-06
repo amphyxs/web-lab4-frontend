@@ -24,12 +24,12 @@ export class PointsService {
    * @returns `Observable` с объектом данных о точке.
    */
   private _getPointsData(): Observable<PointData[]> {
-    const url = `lab4/api/checks/previousChecks`;
+    const url = `lab4/api/point-checks`;
     
     return this._http.get<PointData[]>(
       url,
       {
-        headers: this._authService.authHeaders,
+        headers: this._authService.getAuthHeaders(),
       },
     );
   }
@@ -54,7 +54,7 @@ export class PointsService {
    * @param pointData объект из формы точки.
    */
   public savePoint(pointData: PointEdit): Observable<Object> {
-    const url = 'lab4/api/checks/check';
+    const url = 'lab4/api/point-checks';
 
     return this._http.post(
       url,
@@ -64,7 +64,7 @@ export class PointsService {
         r: pointData.r,
       },
       {
-        headers: this._authService.authHeaders,
+        headers: this._authService.getAuthHeaders(),
       },
     );
   }

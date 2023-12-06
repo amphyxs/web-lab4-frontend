@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 
 /**
  * Guard для проверки, аутентифицирован ли пользователь.
@@ -19,9 +19,10 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  const status = authService.authViaToken();
-  if (!status)
-    router.navigate(['/login']);
-
-  return status;
+  return authService.authViaToken().pipe(
+    tap(isTokinValid => {
+      if (!isTokinValid)
+        router.navigate(['/login']);
+    })
+  );
 };

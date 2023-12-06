@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, UserCredentials } from '@core/models/user.model';
 import { environment } from 'environments/environment';
-import { Observable, map, tap, throwError } from 'rxjs';
+import { Observable, map, of, tap, throwError } from 'rxjs';
 
 interface LoginOrRegisterResponse {
   token: string;
@@ -32,10 +32,13 @@ export class AuthService {
     this._storeUser();
   }
 
-  public get authHeaders(): HttpHeaders {
+  public getAuthHeaders(user?: User | null): HttpHeaders {
+    if (user == undefined)
+      user = this.currentUser;
+
     let headers = new HttpHeaders();
-    if (this.currentUser?.token != undefined)
-      headers = headers.set('Authorization', this.currentUser?.token);
+    if (user?.token != undefined)
+      headers = headers.set('Authorization', user?.token);
 
     return headers;
   }
@@ -102,20 +105,33 @@ export class AuthService {
       url,
       null,
       {
-        headers: this.authHeaders
+        headers: this.getAuthHeaders(this.currentUser)
       },
     );
   }
 
-  public authViaToken(): boolean {
+  public authViaToken(): Observable<boolean> {
     const user = this._restoreUser();
 
     if (user == undefined || user.token == undefined) {
-      return false;
+      return of(false);
     }
 
-    this.currentUser = user;
-    return true;
+    const url = 'lab4/api/auth/check-token';
+    const checkTokenObservable = this._http.post(
+      url,
+      null,
+      {
+        headers: this.getAuthHeaders(user),
+      }
+    );
+
+    return checkTokenObservable.pipe(
+      map(res => {
+        this.currentUser = user;
+        return true;
+      })
+    )
   }
 
   /**
