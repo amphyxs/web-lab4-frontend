@@ -1,4 +1,4 @@
 export const environment = {
   productuon: false,
-  apiUrl: '/lab4/api',
+  apiUrl: 'http://localhost:8000/lab4',
 };
