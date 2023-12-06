@@ -3,14 +3,16 @@
     <label class="field__label" >
       Имя пользователя:
     </label>
-    <input class="field__input" type="text" name="username" [(ngModel)]="username"/>
+    <div style="width: 80%;">
+      <input class="field__input" style="width: 100%;" type="text" name="username" [(ngModel)]="username"/>
+    </div>
   </div>
   <div class="form__field">
     <label class="field__label" >
       Пароль:
     </label>
-    <div>
-      <input class="field__input" type="password" name="password" [(ngModel)]="password"/>
+    <div style="width: 80%;">
+      <input class="field__input" style="width: 100%;" type="password" name="password" [(ngModel)]="password"/>
       <p *ngIf="validationError != undefined" class="text-red-700 break-words whitespace-break-spaces">
         {{ validationError }}
       </p>
