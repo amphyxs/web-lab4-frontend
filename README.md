@@ -1,4 +1,4 @@
-# Frontend
+# Selectel x DonorSearch hack 2024 - Frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.2.
 
